@@ -1,0 +1,71 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "gradle.plugin.org.detoeuf:swagger-codegen-plugin:1.7.1"
+    }
+}
+
+plugins {
+    id 'org.detoeuf.swagger-codegen' version '1.7.1'
+    id 'java'
+}
+
+description = "Swagger generated models for petshop api csharp client"
+
+swagger {
+    inputSpec = "${projectDir}/../petshop-swagger/petshop-swagger.yaml"
+    outputDir = "${projectDir}/generated-sources"
+    lang = 'csharp'
+
+    additionalProperties = [
+            'apiPackage'     : 'com.trestman.client.petshop',
+            'modelPackage'   : 'com.trestman.client.petshop.model',
+            'groupId'        : 'com.trestman',
+            'artifactId'     : 'csharpclient',
+            'artifactVersion': version,
+            'templateDir'    : "${projectDir}/swagger-templates".toString()
+    ]
+    systemProperties = [
+            'serializableModel'      : 'true',
+            'hideGenerationTimestamp': 'true'
+    ]
+}
+
+task cleanup (type: Delete){
+    mustRunAfter "swagger"
+}
+
+project.tasks.compileJava.dependsOn(cleanup);
+
+clean.doFirst {
+    delete "${projectDir}/generated-sources/"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${projectDir}/generated-sources/src/main/java"
+        }
+    }
+}
+
+ext {
+    jackson_version = '2.4.2'
+    jersey_version = '1.18'
+    oltu_version = "1.0.1"
+    jodatime_version = '2.8.2'
+    swagger_annotations_version = "1.5.8"
+    junit_version = "4.12"
+}
+
+dependencies {
+    compile "io.swagger:swagger-annotations:$swagger_annotations_version"
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile group: 'joda-time', name: 'joda-time', version: "${jodatime_version}"
+    testCompile "junit:junit:$junit_version"
+}

@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    ext {
+        springboot_version = '1.5.9.RELEASE'
+        junit_version = '4.8.1'
+        lombok_version = '1.16.14'
+        java_websocket_version = '1.1'
+        gson_version = '2.8.0'
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springboot_version}")
+    }
+}
+
+apply plugin: "org.springframework.boot"
+
+configurations {
+    dev
+    compile.exclude module: "spring-boot-starter-tomcat"
+//    compile.exclude module: "spring-boot-starter-logging"
+//    compile.exclude module: "logback-classic"
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springboot_version}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: "${springboot_version}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: "${springboot_version}"
+    compile group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    //compile group: 'javax.websocket', name: 'javax.websocket-api', version: "${java_websocket_version}"
+    compile group: 'com.google.code.gson', name: 'gson', version: "${gson_version}"
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springboot_version}"
+}
+
+springBoot {
+    mainClass = "com.trestman.websocketpi.petshop.PetshopWebsocketApi"
+}
+
+bootRun {
+    classpath = sourceSets.main.runtimeClasspath + configurations.dev
+}

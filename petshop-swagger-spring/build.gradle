@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "gradle.plugin.org.detoeuf:swagger-codegen-plugin:1.7.1"
+    }
+}
+
+plugins {
+    id 'org.detoeuf.swagger-codegen' version '1.7.1'
+    id 'java'
+}
+
+description = "Swagger generated models for petshop api"
+
+swagger {
+    inputSpec = "${projectDir}/../petshop-swagger/petshop-swagger.yaml"
+    outputDir = "${projectDir}/generated-sources"
+    lang = 'spring'
+
+    additionalProperties = [
+            'apiPackage'     : 'com.trestman.swagger.api.petshop.spring',
+            'modelPackage'   : 'com.trestman.swagger.api.petshop.model',
+            'groupId'        : 'com.seismic',
+            'artifactId'     : 'spring',
+            'artifactVersion': version,
+            'templateDir' : "${projectDir}/swagger-templates".toString(),
+            'dateLibrary'    : 'java8'
+    ]
+    systemProperties = [
+            'serializableModel'      : 'true',
+            'hideGenerationTimestamp': 'true',
+            'apis' : '',
+            'models': ''
+    ]
+}
+
+task cleanup (type: Delete){
+    mustRunAfter "swagger"
+    doFirst {
+        delete fileTree("${projectDir}/generated-sources/src/main/java/com/seismicgames/swagger/api/petshop/spring") {
+            include '**/*Controller.java'
+        }
+    }
+}
+project.tasks.compileJava.dependsOn(cleanup);
+
+clean.doFirst {
+    delete "${projectDir}/generated-sources/"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${projectDir}/generated-sources/src/main/java"
+        }
+    }
+}
+
+ext {
+    springboot_version = '1.5.3.RELEASE'
+    swagger_version = '1.5.13'
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springboot_version}"
+    compile group: 'io.swagger', name: 'swagger-core', version: "${swagger_version}"
+}

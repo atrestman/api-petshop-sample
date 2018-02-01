@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    ext {
+        springboot_version = '1.5.3.RELEASE'
+        springfox_version = '2.5.0'
+        junit_version = '4.8.1'
+        lombok_version = '1.16.14'
+        flyway_version = '4.2.0'
+        maria_db_cnnector_version = "2.2.0"
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springboot_version}")
+    }
+}
+
+dependencies {
+    compile group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "${springboot_version}"
+    compile group: 'org.flywaydb', name: 'flyway-core', version: "${flyway_version}"
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${maria_db_cnnector_version}"
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springboot_version}"
+}

@@ -1,0 +1,13 @@
+rootProject.name = 'api-petshop'
+
+include ':petshop-api'
+include ':petshop-swagger-spring'
+include ':petshop-service'
+include ':petshop-websocket-api'
+include ':petshop-websocket-spring'
+
+project(':petshop-api').projectDir = "$rootDir/petshop-api" as File
+project(':petshop-service').projectDir = "$rootDir/petshop-service" as File
+project(':petshop-swagger-spring').projectDir = "$rootDir/petshop-swagger-spring" as File
+project(':petshop-websocket-api').projectDir = "$rootDir/petshop-websocket-api" as File
+project(':petshop-websocket-spring').projectDir = "$rootDir/petshop-websocket-spring" as File

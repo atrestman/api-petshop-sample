@@ -1,0 +1,29 @@
+.DS_Store
+.gradle/
+.idea/
+
+gradle/
+build/
+out/
+generated-sources/
+classes/
+
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+*.class
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Remove intellij configuration
+*.iml
+
+# Remove all gradlew provisioning
+gradlew
+gradlew.*

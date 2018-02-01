@@ -1,0 +1,35 @@
+allprojects {
+	apply plugin: 'maven'
+	apply plugin: 'java'
+	apply plugin: 'idea'
+	apply plugin: 'maven-publish'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	version = getVersionFromGitTag()
+
+	group 'com.trestman'
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+}
+
+def getVersionFromGitTag() {
+	def stdout = new ByteArrayOutputStream()
+
+	exec {
+		ignoreExitValue true
+		standardOutput = stdout
+		commandLine 'git', 'describe', '--tags'
+	}
+
+	if(stdout.size() == 0) {
+		return '0.0.0'
+	} else {
+		return stdout.toString().trim()
+	}
+}

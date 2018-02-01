@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    ext {
+        springboot_version = '1.5.3.RELEASE'
+        springfox_version = '2.5.0'
+        junit_version = '4.8.1'
+        lombok_version = '1.16.14'
+        flyway_version = '4.2.0'
+        maria_db_cnnector_version = "2.2.0"
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springboot_version}")
+    }
+}
+
+apply plugin: "org.springframework.boot"
+
+configurations {
+    dev
+    compile.exclude module: "spring-boot-starter-tomcat"
+//    compile.exclude module: "spring-boot-starter-logging"
+//    compile.exclude module: "logback-classic"
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springboot_version}"
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springboot_version}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: "${springboot_version}"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "${springboot_version}"
+    compile group: 'org.projectlombok', name: 'lombok', version: "${lombok_version}"
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: "${springfox_version}"
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${springfox_version}"
+    compile group: 'org.flywaydb', name: 'flyway-core', version: "${flyway_version}"
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: "${maria_db_cnnector_version}"
+    compile project(":petshop-swagger-spring")
+    compile project(":petshop-service")
+//    compile group: 'com.trestman', name: 'lotus-dal', version: '1.0-SNAPSHOT'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springboot_version}"
+//    dev group: 'org.springframework.boot', name: 'spring-boot-devtools', version: "${springboot_version}"
+}
+
+springBoot {
+    mainClass = "com.trestman.api.petshop.PetshopApi"
+}
+
+bootRun {
+    classpath = sourceSets.main.runtimeClasspath + configurations.dev
+}
+
