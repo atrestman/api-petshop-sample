@@ -23,7 +23,7 @@ swagger {
     additionalProperties = [
             'apiPackage'     : 'com.trestman.swagger.api.petshop.spring',
             'modelPackage'   : 'com.trestman.swagger.api.petshop.model',
-            'groupId'        : 'com.seismic',
+            'groupId'        : 'com.trestman',
             'artifactId'     : 'spring',
             'artifactVersion': version,
             'templateDir' : "${projectDir}/swagger-templates".toString(),
@@ -40,7 +40,7 @@ swagger {
 task cleanup (type: Delete){
     mustRunAfter "swagger"
     doFirst {
-        delete fileTree("${projectDir}/generated-sources/src/main/java/com/seismicgames/swagger/api/petshop/spring") {
+        delete fileTree("${projectDir}/generated-sources/src/main/java/com/trestman/swagger/api/petshop/spring") {
             include '**/*Controller.java'
         }
     }
